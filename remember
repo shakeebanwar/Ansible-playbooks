@@ -1,0 +1,127 @@
+Create a file Playbook:
+
+---
+- name: Create a file
+  hosts: all
+  tasks:
+    - name: Create example.txt
+      file:
+        path: /home/ubuntu/hello.txt
+        state: touch
+#################################################        
+        
+Create a file and insert a text:
+
+---
+- name: Create a file
+  hosts: all
+  tasks:
+    - name: Create example.txt
+      file:
+        path: /home/ubuntu/hello.txt
+        state: touch
+
+    - name: Add line to example.txt
+      lineinfile:
+        path: /home/ubuntu/hello.txt
+        line: 'Hello, world!'
+
+
+#################################################          
+        
+Create a new user:
+        
+
+
+
+---
+- name : This playbook will create a user
+  hosts : all
+  become : true
+  tasks : 
+  - name: Create a new user
+    user : name=devopswithshakeeb
+###########################################################
+
+
+Install docker:
+
+---
+- name: This playbook will install Docker
+  hosts: all
+  become: true
+  tasks:
+  - name: Add Docker GPG apt Key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+
+  - name: Add Docker Repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+
+  - name: Install Docker
+    apt:
+        name: docker-ce
+        state: latest
+
+
+
+#############################################################
+Install Nginx :
+
+
+
+---
+- name: Install Nginx
+  hosts: servers
+  become: yes
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Start Nginx service
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+
+
+#############################################################
+
+Install docker-compose:
+
+---
+- name: Install Docker Compose
+  hosts: servers
+  become: yes
+
+  tasks:
+    - name: Install Python and pip
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3
+        - python3-pip
+
+    - name: Install Docker Compose
+      pip:
+        name: docker-compose
+        state: present
+
+
+
+
+
+
+#############################################################
+
+
